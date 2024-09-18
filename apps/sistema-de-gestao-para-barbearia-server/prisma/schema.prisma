@@ -1,0 +1,84 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Profissionais {
+  createdAt     DateTime @default(now())
+  email         String?
+  especialidade String?
+  id            String   @id @default(cuid())
+  nome          String?
+  telefone      String?
+  updatedAt     DateTime @updatedAt
+}
+
+model Clientes {
+  createdAt      DateTime  @default(now())
+  dataNascimento DateTime?
+  email          String?
+  id             String    @id @default(cuid())
+  nome           String?
+  telefone       String?
+  updatedAt      DateTime  @updatedAt
+}
+
+model Agendamentos {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Mensagens {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model DisponibilidadeProfissionais {
+  createdAt     DateTime                                @default(now())
+  horarioFim    DateTime?
+  horarioInicio DateTime?
+  id            String                                  @id @default(cuid())
+  profissional  String?
+  status        EnumDisponibilidadeProfissionaisStatus?
+  updatedAt     DateTime                                @updatedAt
+}
+
+model Acessos {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Funcionarios {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Produtos {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Transacoes {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Servicos {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+enum EnumDisponibilidadeProfissionaisStatus {
+  Option1
+}
