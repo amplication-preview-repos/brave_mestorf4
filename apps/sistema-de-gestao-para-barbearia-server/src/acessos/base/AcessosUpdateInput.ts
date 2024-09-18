@@ -9,5 +9,48 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-class AcessosUpdateInput {}
+import { InputType, Field } from "@nestjs/graphql";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsDate, IsOptional, ValidateNested, IsEnum } from "class-validator";
+import { Type } from "class-transformer";
+import { FuncionariosWhereUniqueInput } from "../../funcionarios/base/FuncionariosWhereUniqueInput";
+import { EnumAcessosTipoAcesso } from "./EnumAcessosTipoAcesso";
+
+@InputType()
+class AcessosUpdateInput {
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  dataHoraAcesso?: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => FuncionariosWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => FuncionariosWhereUniqueInput)
+  @IsOptional()
+  @Field(() => FuncionariosWhereUniqueInput, {
+    nullable: true,
+  })
+  funcionario?: FuncionariosWhereUniqueInput | null;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumAcessosTipoAcesso,
+  })
+  @IsEnum(EnumAcessosTipoAcesso)
+  @IsOptional()
+  @Field(() => EnumAcessosTipoAcesso, {
+    nullable: true,
+  })
+  tipoAcesso?: "Option1" | null;
+}
+
 export { AcessosUpdateInput as AcessosUpdateInput };

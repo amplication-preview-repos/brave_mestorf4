@@ -19,23 +19,31 @@ const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
   createdAt: new Date(),
+  dataHora: new Date(),
+  duracao: 42,
   id: "exampleId",
   updatedAt: new Date(),
 };
 const CREATE_RESULT = {
   createdAt: new Date(),
+  dataHora: new Date(),
+  duracao: 42,
   id: "exampleId",
   updatedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
     createdAt: new Date(),
+    dataHora: new Date(),
+    duracao: 42,
     id: "exampleId",
     updatedAt: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
   createdAt: new Date(),
+  dataHora: new Date(),
+  duracao: 42,
   id: "exampleId",
   updatedAt: new Date(),
 };
@@ -123,6 +131,7 @@ describe("Agendamentos", () => {
       .expect({
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
+        dataHora: CREATE_RESULT.dataHora.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       });
   });
@@ -135,6 +144,7 @@ describe("Agendamentos", () => {
         {
           ...FIND_MANY_RESULT[0],
           createdAt: FIND_MANY_RESULT[0].createdAt.toISOString(),
+          dataHora: FIND_MANY_RESULT[0].dataHora.toISOString(),
           updatedAt: FIND_MANY_RESULT[0].updatedAt.toISOString(),
         },
       ]);
@@ -158,6 +168,7 @@ describe("Agendamentos", () => {
       .expect({
         ...FIND_ONE_RESULT,
         createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
+        dataHora: FIND_ONE_RESULT.dataHora.toISOString(),
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
       });
   });
@@ -171,6 +182,7 @@ describe("Agendamentos", () => {
       .expect({
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
+        dataHora: CREATE_RESULT.dataHora.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       })
       .then(function () {

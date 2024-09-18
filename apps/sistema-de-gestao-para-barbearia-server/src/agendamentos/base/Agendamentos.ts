@@ -11,11 +11,32 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString } from "class-validator";
+import { Clientes } from "../../clientes/base/Clientes";
+import {
+  ValidateNested,
+  IsOptional,
+  IsDate,
+  IsInt,
+  Min,
+  Max,
+  IsString,
+  IsEnum,
+} from "class-validator";
 import { Type } from "class-transformer";
+import { Servicos } from "../../servicos/base/Servicos";
+import { EnumAgendamentosStatus } from "./EnumAgendamentosStatus";
 
 @ObjectType()
 class Agendamentos {
+  @ApiProperty({
+    required: false,
+    type: () => Clientes,
+  })
+  @ValidateNested()
+  @Type(() => Clientes)
+  @IsOptional()
+  cliente?: Clientes | null;
+
   @ApiProperty({
     required: true,
   })
@@ -25,12 +46,56 @@ class Agendamentos {
   createdAt!: Date;
 
   @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  dataHora!: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsInt()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  duracao!: number | null;
+
+  @ApiProperty({
     required: true,
     type: String,
   })
   @IsString()
   @Field(() => String)
   id!: string;
+
+  @ApiProperty({
+    required: false,
+    type: () => Servicos,
+  })
+  @ValidateNested()
+  @Type(() => Servicos)
+  @IsOptional()
+  servico?: Servicos | null;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumAgendamentosStatus,
+  })
+  @IsEnum(EnumAgendamentosStatus)
+  @IsOptional()
+  @Field(() => EnumAgendamentosStatus, {
+    nullable: true,
+  })
+  status?: "Option1" | null;
 
   @ApiProperty({
     required: true,

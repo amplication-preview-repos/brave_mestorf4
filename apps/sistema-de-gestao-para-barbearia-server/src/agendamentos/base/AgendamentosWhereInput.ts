@@ -11,12 +11,51 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringFilter } from "../../util/StringFilter";
+import { ClientesWhereUniqueInput } from "../../clientes/base/ClientesWhereUniqueInput";
+import { ValidateNested, IsOptional, IsEnum } from "class-validator";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
+import { IntNullableFilter } from "../../util/IntNullableFilter";
+import { StringFilter } from "../../util/StringFilter";
+import { ServicosWhereUniqueInput } from "../../servicos/base/ServicosWhereUniqueInput";
+import { EnumAgendamentosStatus } from "./EnumAgendamentosStatus";
 
 @InputType()
 class AgendamentosWhereInput {
+  @ApiProperty({
+    required: false,
+    type: () => ClientesWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => ClientesWhereUniqueInput)
+  @IsOptional()
+  @Field(() => ClientesWhereUniqueInput, {
+    nullable: true,
+  })
+  cliente?: ClientesWhereUniqueInput;
+
+  @ApiProperty({
+    required: false,
+    type: DateTimeNullableFilter,
+  })
+  @Type(() => DateTimeNullableFilter)
+  @IsOptional()
+  @Field(() => DateTimeNullableFilter, {
+    nullable: true,
+  })
+  dataHora?: DateTimeNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: IntNullableFilter,
+  })
+  @Type(() => IntNullableFilter)
+  @IsOptional()
+  @Field(() => IntNullableFilter, {
+    nullable: true,
+  })
+  duracao?: IntNullableFilter;
+
   @ApiProperty({
     required: false,
     type: StringFilter,
@@ -27,6 +66,29 @@ class AgendamentosWhereInput {
     nullable: true,
   })
   id?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => ServicosWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => ServicosWhereUniqueInput)
+  @IsOptional()
+  @Field(() => ServicosWhereUniqueInput, {
+    nullable: true,
+  })
+  servico?: ServicosWhereUniqueInput;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumAgendamentosStatus,
+  })
+  @IsEnum(EnumAgendamentosStatus)
+  @IsOptional()
+  @Field(() => EnumAgendamentosStatus, {
+    nullable: true,
+  })
+  status?: "Option1";
 }
 
 export { AgendamentosWhereInput as AgendamentosWhereInput };

@@ -11,11 +11,44 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString } from "class-validator";
+import { Acessos } from "../../acessos/base/Acessos";
+
+import {
+  ValidateNested,
+  IsOptional,
+  IsString,
+  MaxLength,
+  IsDate,
+  IsNumber,
+  Min,
+  Max,
+} from "class-validator";
+
 import { Type } from "class-transformer";
 
 @ObjectType()
 class Funcionarios {
+  @ApiProperty({
+    required: false,
+    type: () => [Acessos],
+  })
+  @ValidateNested()
+  @Type(() => Acessos)
+  @IsOptional()
+  acessosItems?: Array<Acessos>;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  cargo!: string | null;
+
   @ApiProperty({
     required: true,
   })
@@ -25,12 +58,60 @@ class Funcionarios {
   createdAt!: Date;
 
   @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  email!: string | null;
+
+  @ApiProperty({
     required: true,
     type: String,
   })
   @IsString()
   @Field(() => String)
   id!: string;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  nome!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsNumber()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  salario!: number | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  telefone!: string | null;
 
   @ApiProperty({
     required: true,

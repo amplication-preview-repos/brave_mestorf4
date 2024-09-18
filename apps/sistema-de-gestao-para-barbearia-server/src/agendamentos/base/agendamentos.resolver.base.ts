@@ -17,7 +17,11 @@ import { Agendamentos } from "./Agendamentos";
 import { AgendamentosCountArgs } from "./AgendamentosCountArgs";
 import { AgendamentosFindManyArgs } from "./AgendamentosFindManyArgs";
 import { AgendamentosFindUniqueArgs } from "./AgendamentosFindUniqueArgs";
+import { CreateAgendamentosArgs } from "./CreateAgendamentosArgs";
+import { UpdateAgendamentosArgs } from "./UpdateAgendamentosArgs";
 import { DeleteAgendamentosArgs } from "./DeleteAgendamentosArgs";
+import { Clientes } from "../../clientes/base/Clientes";
+import { Servicos } from "../../servicos/base/Servicos";
 import { AgendamentosService } from "../agendamentos.service";
 @graphql.Resolver(() => Agendamentos)
 export class AgendamentosResolverBase {
@@ -51,6 +55,63 @@ export class AgendamentosResolverBase {
   }
 
   @graphql.Mutation(() => Agendamentos)
+  async createAgendamentos(
+    @graphql.Args() args: CreateAgendamentosArgs
+  ): Promise<Agendamentos> {
+    return await this.service.createAgendamentos({
+      ...args,
+      data: {
+        ...args.data,
+
+        cliente: args.data.cliente
+          ? {
+              connect: args.data.cliente,
+            }
+          : undefined,
+
+        servico: args.data.servico
+          ? {
+              connect: args.data.servico,
+            }
+          : undefined,
+      },
+    });
+  }
+
+  @graphql.Mutation(() => Agendamentos)
+  async updateAgendamentos(
+    @graphql.Args() args: UpdateAgendamentosArgs
+  ): Promise<Agendamentos | null> {
+    try {
+      return await this.service.updateAgendamentos({
+        ...args,
+        data: {
+          ...args.data,
+
+          cliente: args.data.cliente
+            ? {
+                connect: args.data.cliente,
+              }
+            : undefined,
+
+          servico: args.data.servico
+            ? {
+                connect: args.data.servico,
+              }
+            : undefined,
+        },
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
+  @graphql.Mutation(() => Agendamentos)
   async deleteAgendamentos(
     @graphql.Args() args: DeleteAgendamentosArgs
   ): Promise<Agendamentos | null> {
@@ -64,5 +125,35 @@ export class AgendamentosResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => Clientes, {
+    nullable: true,
+    name: "cliente",
+  })
+  async getCliente(
+    @graphql.Parent() parent: Agendamentos
+  ): Promise<Clientes | null> {
+    const result = await this.service.getCliente(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
+  }
+
+  @graphql.ResolveField(() => Servicos, {
+    nullable: true,
+    name: "servico",
+  })
+  async getServico(
+    @graphql.Parent() parent: Agendamentos
+  ): Promise<Servicos | null> {
+    const result = await this.service.getServico(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

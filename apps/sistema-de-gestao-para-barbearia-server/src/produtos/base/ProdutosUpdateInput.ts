@@ -9,5 +9,69 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-class ProdutosUpdateInput {}
+import { InputType, Field } from "@nestjs/graphql";
+import { ApiProperty } from "@nestjs/swagger";
+import {
+  IsString,
+  MaxLength,
+  IsOptional,
+  IsInt,
+  Min,
+  Max,
+  IsNumber,
+} from "class-validator";
+
+@InputType()
+class ProdutosUpdateInput {
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  descricao?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsInt()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  estoque?: number | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  nome?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsNumber()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  preco?: number | null;
+}
+
 export { ProdutosUpdateInput as ProdutosUpdateInput };

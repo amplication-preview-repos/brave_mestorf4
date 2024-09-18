@@ -11,11 +11,31 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsOptional, IsString, MaxLength } from "class-validator";
+import { AgendamentosUpdateManyWithoutClientesItemsInput } from "./AgendamentosUpdateManyWithoutClientesItemsInput";
+import {
+  ValidateNested,
+  IsOptional,
+  IsDate,
+  IsString,
+  MaxLength,
+} from "class-validator";
 import { Type } from "class-transformer";
+import { TransacoesUpdateManyWithoutClientesItemsInput } from "./TransacoesUpdateManyWithoutClientesItemsInput";
 
 @InputType()
 class ClientesUpdateInput {
+  @ApiProperty({
+    required: false,
+    type: () => AgendamentosUpdateManyWithoutClientesItemsInput,
+  })
+  @ValidateNested()
+  @Type(() => AgendamentosUpdateManyWithoutClientesItemsInput)
+  @IsOptional()
+  @Field(() => AgendamentosUpdateManyWithoutClientesItemsInput, {
+    nullable: true,
+  })
+  agendamentosItems?: AgendamentosUpdateManyWithoutClientesItemsInput;
+
   @ApiProperty({
     required: false,
   })
@@ -61,6 +81,18 @@ class ClientesUpdateInput {
     nullable: true,
   })
   telefone?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => TransacoesUpdateManyWithoutClientesItemsInput,
+  })
+  @ValidateNested()
+  @Type(() => TransacoesUpdateManyWithoutClientesItemsInput)
+  @IsOptional()
+  @Field(() => TransacoesUpdateManyWithoutClientesItemsInput, {
+    nullable: true,
+  })
+  transacoesItems?: TransacoesUpdateManyWithoutClientesItemsInput;
 }
 
 export { ClientesUpdateInput as ClientesUpdateInput };

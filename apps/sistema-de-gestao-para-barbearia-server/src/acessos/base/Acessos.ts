@@ -11,8 +11,16 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString } from "class-validator";
+import {
+  IsDate,
+  IsOptional,
+  ValidateNested,
+  IsString,
+  IsEnum,
+} from "class-validator";
 import { Type } from "class-transformer";
+import { Funcionarios } from "../../funcionarios/base/Funcionarios";
+import { EnumAcessosTipoAcesso } from "./EnumAcessosTipoAcesso";
 
 @ObjectType()
 class Acessos {
@@ -25,12 +33,43 @@ class Acessos {
   createdAt!: Date;
 
   @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  dataHoraAcesso!: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => Funcionarios,
+  })
+  @ValidateNested()
+  @Type(() => Funcionarios)
+  @IsOptional()
+  funcionario?: Funcionarios | null;
+
+  @ApiProperty({
     required: true,
     type: String,
   })
   @IsString()
   @Field(() => String)
   id!: string;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumAcessosTipoAcesso,
+  })
+  @IsEnum(EnumAcessosTipoAcesso)
+  @IsOptional()
+  @Field(() => EnumAcessosTipoAcesso, {
+    nullable: true,
+  })
+  tipoAcesso?: "Option1" | null;
 
   @ApiProperty({
     required: true,

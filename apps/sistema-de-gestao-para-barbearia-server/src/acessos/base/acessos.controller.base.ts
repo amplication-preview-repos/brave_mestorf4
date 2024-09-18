@@ -31,10 +31,27 @@ export class AcessosControllerBase {
     @common.Body() data: AcessosCreateInput
   ): Promise<Acessos> {
     return await this.service.createAcessos({
-      data: data,
+      data: {
+        ...data,
+
+        funcionario: data.funcionario
+          ? {
+              connect: data.funcionario,
+            }
+          : undefined,
+      },
       select: {
         createdAt: true,
+        dataHoraAcesso: true,
+
+        funcionario: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
+        tipoAcesso: true,
         updatedAt: true,
       },
     });
@@ -49,7 +66,16 @@ export class AcessosControllerBase {
       ...args,
       select: {
         createdAt: true,
+        dataHoraAcesso: true,
+
+        funcionario: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
+        tipoAcesso: true,
         updatedAt: true,
       },
     });
@@ -65,7 +91,16 @@ export class AcessosControllerBase {
       where: params,
       select: {
         createdAt: true,
+        dataHoraAcesso: true,
+
+        funcionario: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
+        tipoAcesso: true,
         updatedAt: true,
       },
     });
@@ -87,10 +122,27 @@ export class AcessosControllerBase {
     try {
       return await this.service.updateAcessos({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          funcionario: data.funcionario
+            ? {
+                connect: data.funcionario,
+              }
+            : undefined,
+        },
         select: {
           createdAt: true,
+          dataHoraAcesso: true,
+
+          funcionario: {
+            select: {
+              id: true,
+            },
+          },
+
           id: true,
+          tipoAcesso: true,
           updatedAt: true,
         },
       });
@@ -115,7 +167,16 @@ export class AcessosControllerBase {
         where: params,
         select: {
           createdAt: true,
+          dataHoraAcesso: true,
+
+          funcionario: {
+            select: {
+              id: true,
+            },
+          },
+
           id: true,
+          tipoAcesso: true,
           updatedAt: true,
         },
       });

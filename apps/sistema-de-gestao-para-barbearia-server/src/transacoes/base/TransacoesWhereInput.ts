@@ -11,12 +11,40 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringFilter } from "../../util/StringFilter";
+import { ClientesWhereUniqueInput } from "../../clientes/base/ClientesWhereUniqueInput";
+import { ValidateNested, IsOptional, IsEnum } from "class-validator";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
+import { StringFilter } from "../../util/StringFilter";
+import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { EnumTransacoesMetodoPagamento } from "./EnumTransacoesMetodoPagamento";
+import { FloatNullableFilter } from "../../util/FloatNullableFilter";
 
 @InputType()
 class TransacoesWhereInput {
+  @ApiProperty({
+    required: false,
+    type: () => ClientesWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => ClientesWhereUniqueInput)
+  @IsOptional()
+  @Field(() => ClientesWhereUniqueInput, {
+    nullable: true,
+  })
+  cliente?: ClientesWhereUniqueInput;
+
+  @ApiProperty({
+    required: false,
+    type: DateTimeNullableFilter,
+  })
+  @Type(() => DateTimeNullableFilter)
+  @IsOptional()
+  @Field(() => DateTimeNullableFilter, {
+    nullable: true,
+  })
+  dataHora?: DateTimeNullableFilter;
+
   @ApiProperty({
     required: false,
     type: StringFilter,
@@ -27,6 +55,39 @@ class TransacoesWhereInput {
     nullable: true,
   })
   id?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  itemVendido?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumTransacoesMetodoPagamento,
+  })
+  @IsEnum(EnumTransacoesMetodoPagamento)
+  @IsOptional()
+  @Field(() => EnumTransacoesMetodoPagamento, {
+    nullable: true,
+  })
+  metodoPagamento?: "Option1";
+
+  @ApiProperty({
+    required: false,
+    type: FloatNullableFilter,
+  })
+  @Type(() => FloatNullableFilter)
+  @IsOptional()
+  @Field(() => FloatNullableFilter, {
+    nullable: true,
+  })
+  valor?: FloatNullableFilter;
 }
 
 export { TransacoesWhereInput as TransacoesWhereInput };

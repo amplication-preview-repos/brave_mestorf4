@@ -31,10 +31,40 @@ export class AgendamentosControllerBase {
     @common.Body() data: AgendamentosCreateInput
   ): Promise<Agendamentos> {
     return await this.service.createAgendamentos({
-      data: data,
+      data: {
+        ...data,
+
+        cliente: data.cliente
+          ? {
+              connect: data.cliente,
+            }
+          : undefined,
+
+        servico: data.servico
+          ? {
+              connect: data.servico,
+            }
+          : undefined,
+      },
       select: {
+        cliente: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
+        dataHora: true,
+        duracao: true,
         id: true,
+
+        servico: {
+          select: {
+            id: true,
+          },
+        },
+
+        status: true,
         updatedAt: true,
       },
     });
@@ -50,8 +80,24 @@ export class AgendamentosControllerBase {
     return this.service.agendamentosItems({
       ...args,
       select: {
+        cliente: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
+        dataHora: true,
+        duracao: true,
         id: true,
+
+        servico: {
+          select: {
+            id: true,
+          },
+        },
+
+        status: true,
         updatedAt: true,
       },
     });
@@ -66,8 +112,24 @@ export class AgendamentosControllerBase {
     const result = await this.service.agendamentos({
       where: params,
       select: {
+        cliente: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
+        dataHora: true,
+        duracao: true,
         id: true,
+
+        servico: {
+          select: {
+            id: true,
+          },
+        },
+
+        status: true,
         updatedAt: true,
       },
     });
@@ -89,10 +151,40 @@ export class AgendamentosControllerBase {
     try {
       return await this.service.updateAgendamentos({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          cliente: data.cliente
+            ? {
+                connect: data.cliente,
+              }
+            : undefined,
+
+          servico: data.servico
+            ? {
+                connect: data.servico,
+              }
+            : undefined,
+        },
         select: {
+          cliente: {
+            select: {
+              id: true,
+            },
+          },
+
           createdAt: true,
+          dataHora: true,
+          duracao: true,
           id: true,
+
+          servico: {
+            select: {
+              id: true,
+            },
+          },
+
+          status: true,
           updatedAt: true,
         },
       });
@@ -116,8 +208,24 @@ export class AgendamentosControllerBase {
       return await this.service.deleteAgendamentos({
         where: params,
         select: {
+          cliente: {
+            select: {
+              id: true,
+            },
+          },
+
           createdAt: true,
+          dataHora: true,
+          duracao: true,
           id: true,
+
+          servico: {
+            select: {
+              id: true,
+            },
+          },
+
+          status: true,
           updatedAt: true,
         },
       });

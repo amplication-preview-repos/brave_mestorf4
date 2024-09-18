@@ -10,7 +10,13 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-import { Prisma, Agendamentos as PrismaAgendamentos } from "@prisma/client";
+
+import {
+  Prisma,
+  Agendamentos as PrismaAgendamentos,
+  Clientes as PrismaClientes,
+  Servicos as PrismaServicos,
+} from "@prisma/client";
 
 export class AgendamentosServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -45,5 +51,21 @@ export class AgendamentosServiceBase {
     args: Prisma.AgendamentosDeleteArgs
   ): Promise<PrismaAgendamentos> {
     return this.prisma.agendamentos.delete(args);
+  }
+
+  async getCliente(parentId: string): Promise<PrismaClientes | null> {
+    return this.prisma.agendamentos
+      .findUnique({
+        where: { id: parentId },
+      })
+      .cliente();
+  }
+
+  async getServico(parentId: string): Promise<PrismaServicos | null> {
+    return this.prisma.agendamentos
+      .findUnique({
+        where: { id: parentId },
+      })
+      .servico();
   }
 }

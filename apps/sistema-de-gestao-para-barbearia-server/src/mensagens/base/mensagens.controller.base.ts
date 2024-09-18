@@ -34,7 +34,11 @@ export class MensagensControllerBase {
       data: data,
       select: {
         createdAt: true,
+        destinatario: true,
         id: true,
+        lida: true,
+        mensagem: true,
+        remetente: true,
         updatedAt: true,
       },
     });
@@ -49,7 +53,11 @@ export class MensagensControllerBase {
       ...args,
       select: {
         createdAt: true,
+        destinatario: true,
         id: true,
+        lida: true,
+        mensagem: true,
+        remetente: true,
         updatedAt: true,
       },
     });
@@ -65,7 +73,11 @@ export class MensagensControllerBase {
       where: params,
       select: {
         createdAt: true,
+        destinatario: true,
         id: true,
+        lida: true,
+        mensagem: true,
+        remetente: true,
         updatedAt: true,
       },
     });
@@ -90,7 +102,11 @@ export class MensagensControllerBase {
         data: data,
         select: {
           createdAt: true,
+          destinatario: true,
           id: true,
+          lida: true,
+          mensagem: true,
+          remetente: true,
           updatedAt: true,
         },
       });
@@ -115,7 +131,11 @@ export class MensagensControllerBase {
         where: params,
         select: {
           createdAt: true,
+          destinatario: true,
           id: true,
+          lida: true,
+          mensagem: true,
+          remetente: true,
           updatedAt: true,
         },
       });

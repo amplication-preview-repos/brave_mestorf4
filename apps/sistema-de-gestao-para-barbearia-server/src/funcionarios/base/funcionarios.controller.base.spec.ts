@@ -18,25 +18,45 @@ import { FuncionariosService } from "../funcionarios.service";
 const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
+  cargo: "exampleCargo",
   createdAt: new Date(),
+  email: "exampleEmail",
   id: "exampleId",
+  nome: "exampleNome",
+  salario: 42.42,
+  telefone: "exampleTelefone",
   updatedAt: new Date(),
 };
 const CREATE_RESULT = {
+  cargo: "exampleCargo",
   createdAt: new Date(),
+  email: "exampleEmail",
   id: "exampleId",
+  nome: "exampleNome",
+  salario: 42.42,
+  telefone: "exampleTelefone",
   updatedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
+    cargo: "exampleCargo",
     createdAt: new Date(),
+    email: "exampleEmail",
     id: "exampleId",
+    nome: "exampleNome",
+    salario: 42.42,
+    telefone: "exampleTelefone",
     updatedAt: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
+  cargo: "exampleCargo",
   createdAt: new Date(),
+  email: "exampleEmail",
   id: "exampleId",
+  nome: "exampleNome",
+  salario: 42.42,
+  telefone: "exampleTelefone",
   updatedAt: new Date(),
 };
 

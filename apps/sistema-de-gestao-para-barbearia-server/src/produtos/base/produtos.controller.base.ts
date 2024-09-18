@@ -34,7 +34,11 @@ export class ProdutosControllerBase {
       data: data,
       select: {
         createdAt: true,
+        descricao: true,
+        estoque: true,
         id: true,
+        nome: true,
+        preco: true,
         updatedAt: true,
       },
     });
@@ -49,7 +53,11 @@ export class ProdutosControllerBase {
       ...args,
       select: {
         createdAt: true,
+        descricao: true,
+        estoque: true,
         id: true,
+        nome: true,
+        preco: true,
         updatedAt: true,
       },
     });
@@ -65,7 +73,11 @@ export class ProdutosControllerBase {
       where: params,
       select: {
         createdAt: true,
+        descricao: true,
+        estoque: true,
         id: true,
+        nome: true,
+        preco: true,
         updatedAt: true,
       },
     });
@@ -90,7 +102,11 @@ export class ProdutosControllerBase {
         data: data,
         select: {
           createdAt: true,
+          descricao: true,
+          estoque: true,
           id: true,
+          nome: true,
+          preco: true,
           updatedAt: true,
         },
       });
@@ -115,7 +131,11 @@ export class ProdutosControllerBase {
         where: params,
         select: {
           createdAt: true,
+          descricao: true,
+          estoque: true,
           id: true,
+          nome: true,
+          preco: true,
           updatedAt: true,
         },
       });

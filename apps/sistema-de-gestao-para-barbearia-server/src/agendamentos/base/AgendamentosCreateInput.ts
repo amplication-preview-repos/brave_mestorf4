@@ -9,5 +9,82 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-class AgendamentosCreateInput {}
+import { InputType, Field } from "@nestjs/graphql";
+import { ApiProperty } from "@nestjs/swagger";
+import { ClientesWhereUniqueInput } from "../../clientes/base/ClientesWhereUniqueInput";
+import {
+  ValidateNested,
+  IsOptional,
+  IsDate,
+  IsInt,
+  Min,
+  Max,
+  IsEnum,
+} from "class-validator";
+import { Type } from "class-transformer";
+import { ServicosWhereUniqueInput } from "../../servicos/base/ServicosWhereUniqueInput";
+import { EnumAgendamentosStatus } from "./EnumAgendamentosStatus";
+
+@InputType()
+class AgendamentosCreateInput {
+  @ApiProperty({
+    required: false,
+    type: () => ClientesWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => ClientesWhereUniqueInput)
+  @IsOptional()
+  @Field(() => ClientesWhereUniqueInput, {
+    nullable: true,
+  })
+  cliente?: ClientesWhereUniqueInput | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  dataHora?: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsInt()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  duracao?: number | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => ServicosWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => ServicosWhereUniqueInput)
+  @IsOptional()
+  @Field(() => ServicosWhereUniqueInput, {
+    nullable: true,
+  })
+  servico?: ServicosWhereUniqueInput | null;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumAgendamentosStatus,
+  })
+  @IsEnum(EnumAgendamentosStatus)
+  @IsOptional()
+  @Field(() => EnumAgendamentosStatus, {
+    nullable: true,
+  })
+  status?: "Option1" | null;
+}
+
 export { AgendamentosCreateInput as AgendamentosCreateInput };

@@ -22,6 +22,9 @@ import { Servicos } from "./Servicos";
 import { ServicosFindManyArgs } from "./ServicosFindManyArgs";
 import { ServicosWhereUniqueInput } from "./ServicosWhereUniqueInput";
 import { ServicosUpdateInput } from "./ServicosUpdateInput";
+import { AgendamentosFindManyArgs } from "../../agendamentos/base/AgendamentosFindManyArgs";
+import { Agendamentos } from "../../agendamentos/base/Agendamentos";
+import { AgendamentosWhereUniqueInput } from "../../agendamentos/base/AgendamentosWhereUniqueInput";
 
 export class ServicosControllerBase {
   constructor(protected readonly service: ServicosService) {}
@@ -34,7 +37,10 @@ export class ServicosControllerBase {
       data: data,
       select: {
         createdAt: true,
+        descricao: true,
         id: true,
+        nome: true,
+        preco: true,
         updatedAt: true,
       },
     });
@@ -49,7 +55,10 @@ export class ServicosControllerBase {
       ...args,
       select: {
         createdAt: true,
+        descricao: true,
         id: true,
+        nome: true,
+        preco: true,
         updatedAt: true,
       },
     });
@@ -65,7 +74,10 @@ export class ServicosControllerBase {
       where: params,
       select: {
         createdAt: true,
+        descricao: true,
         id: true,
+        nome: true,
+        preco: true,
         updatedAt: true,
       },
     });
@@ -90,7 +102,10 @@ export class ServicosControllerBase {
         data: data,
         select: {
           createdAt: true,
+          descricao: true,
           id: true,
+          nome: true,
+          preco: true,
           updatedAt: true,
         },
       });
@@ -115,7 +130,10 @@ export class ServicosControllerBase {
         where: params,
         select: {
           createdAt: true,
+          descricao: true,
           id: true,
+          nome: true,
+          preco: true,
           updatedAt: true,
         },
       });
@@ -127,5 +145,95 @@ export class ServicosControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.Get("/:id/agendamentosItems")
+  @ApiNestedQuery(AgendamentosFindManyArgs)
+  async findAgendamentosItems(
+    @common.Req() request: Request,
+    @common.Param() params: ServicosWhereUniqueInput
+  ): Promise<Agendamentos[]> {
+    const query = plainToClass(AgendamentosFindManyArgs, request.query);
+    const results = await this.service.findAgendamentosItems(params.id, {
+      ...query,
+      select: {
+        cliente: {
+          select: {
+            id: true,
+          },
+        },
+
+        createdAt: true,
+        dataHora: true,
+        duracao: true,
+        id: true,
+
+        servico: {
+          select: {
+            id: true,
+          },
+        },
+
+        status: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/agendamentosItems")
+  async connectAgendamentosItems(
+    @common.Param() params: ServicosWhereUniqueInput,
+    @common.Body() body: AgendamentosWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      agendamentosItems: {
+        connect: body,
+      },
+    };
+    await this.service.updateServicos({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/agendamentosItems")
+  async updateAgendamentosItems(
+    @common.Param() params: ServicosWhereUniqueInput,
+    @common.Body() body: AgendamentosWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      agendamentosItems: {
+        set: body,
+      },
+    };
+    await this.service.updateServicos({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/agendamentosItems")
+  async disconnectAgendamentosItems(
+    @common.Param() params: ServicosWhereUniqueInput,
+    @common.Body() body: AgendamentosWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      agendamentosItems: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateServicos({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

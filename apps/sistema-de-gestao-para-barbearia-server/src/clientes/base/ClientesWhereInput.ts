@@ -11,14 +11,28 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
+import { AgendamentosListRelationFilter } from "../../agendamentos/base/AgendamentosListRelationFilter";
+import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
+import { TransacoesListRelationFilter } from "../../transacoes/base/TransacoesListRelationFilter";
 
 @InputType()
 class ClientesWhereInput {
+  @ApiProperty({
+    required: false,
+    type: () => AgendamentosListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => AgendamentosListRelationFilter)
+  @IsOptional()
+  @Field(() => AgendamentosListRelationFilter, {
+    nullable: true,
+  })
+  agendamentosItems?: AgendamentosListRelationFilter;
+
   @ApiProperty({
     required: false,
     type: DateTimeNullableFilter,
@@ -73,6 +87,18 @@ class ClientesWhereInput {
     nullable: true,
   })
   telefone?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => TransacoesListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => TransacoesListRelationFilter)
+  @IsOptional()
+  @Field(() => TransacoesListRelationFilter, {
+    nullable: true,
+  })
+  transacoesItems?: TransacoesListRelationFilter;
 }
 
 export { ClientesWhereInput as ClientesWhereInput };

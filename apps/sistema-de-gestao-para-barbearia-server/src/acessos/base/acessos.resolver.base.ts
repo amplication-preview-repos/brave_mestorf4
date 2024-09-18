@@ -17,7 +17,10 @@ import { Acessos } from "./Acessos";
 import { AcessosCountArgs } from "./AcessosCountArgs";
 import { AcessosFindManyArgs } from "./AcessosFindManyArgs";
 import { AcessosFindUniqueArgs } from "./AcessosFindUniqueArgs";
+import { CreateAcessosArgs } from "./CreateAcessosArgs";
+import { UpdateAcessosArgs } from "./UpdateAcessosArgs";
 import { DeleteAcessosArgs } from "./DeleteAcessosArgs";
+import { Funcionarios } from "../../funcionarios/base/Funcionarios";
 import { AcessosService } from "../acessos.service";
 @graphql.Resolver(() => Acessos)
 export class AcessosResolverBase {
@@ -51,6 +54,51 @@ export class AcessosResolverBase {
   }
 
   @graphql.Mutation(() => Acessos)
+  async createAcessos(
+    @graphql.Args() args: CreateAcessosArgs
+  ): Promise<Acessos> {
+    return await this.service.createAcessos({
+      ...args,
+      data: {
+        ...args.data,
+
+        funcionario: args.data.funcionario
+          ? {
+              connect: args.data.funcionario,
+            }
+          : undefined,
+      },
+    });
+  }
+
+  @graphql.Mutation(() => Acessos)
+  async updateAcessos(
+    @graphql.Args() args: UpdateAcessosArgs
+  ): Promise<Acessos | null> {
+    try {
+      return await this.service.updateAcessos({
+        ...args,
+        data: {
+          ...args.data,
+
+          funcionario: args.data.funcionario
+            ? {
+                connect: args.data.funcionario,
+              }
+            : undefined,
+        },
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
+  @graphql.Mutation(() => Acessos)
   async deleteAcessos(
     @graphql.Args() args: DeleteAcessosArgs
   ): Promise<Acessos | null> {
@@ -64,5 +112,20 @@ export class AcessosResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => Funcionarios, {
+    nullable: true,
+    name: "funcionario",
+  })
+  async getFuncionario(
+    @graphql.Parent() parent: Acessos
+  ): Promise<Funcionarios | null> {
+    const result = await this.service.getFuncionario(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

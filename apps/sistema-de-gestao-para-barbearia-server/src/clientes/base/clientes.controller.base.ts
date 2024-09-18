@@ -22,6 +22,12 @@ import { Clientes } from "./Clientes";
 import { ClientesFindManyArgs } from "./ClientesFindManyArgs";
 import { ClientesWhereUniqueInput } from "./ClientesWhereUniqueInput";
 import { ClientesUpdateInput } from "./ClientesUpdateInput";
+import { AgendamentosFindManyArgs } from "../../agendamentos/base/AgendamentosFindManyArgs";
+import { Agendamentos } from "../../agendamentos/base/Agendamentos";
+import { AgendamentosWhereUniqueInput } from "../../agendamentos/base/AgendamentosWhereUniqueInput";
+import { TransacoesFindManyArgs } from "../../transacoes/base/TransacoesFindManyArgs";
+import { Transacoes } from "../../transacoes/base/Transacoes";
+import { TransacoesWhereUniqueInput } from "../../transacoes/base/TransacoesWhereUniqueInput";
 
 export class ClientesControllerBase {
   constructor(protected readonly service: ClientesService) {}
@@ -147,5 +153,179 @@ export class ClientesControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.Get("/:id/agendamentosItems")
+  @ApiNestedQuery(AgendamentosFindManyArgs)
+  async findAgendamentosItems(
+    @common.Req() request: Request,
+    @common.Param() params: ClientesWhereUniqueInput
+  ): Promise<Agendamentos[]> {
+    const query = plainToClass(AgendamentosFindManyArgs, request.query);
+    const results = await this.service.findAgendamentosItems(params.id, {
+      ...query,
+      select: {
+        cliente: {
+          select: {
+            id: true,
+          },
+        },
+
+        createdAt: true,
+        dataHora: true,
+        duracao: true,
+        id: true,
+
+        servico: {
+          select: {
+            id: true,
+          },
+        },
+
+        status: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/agendamentosItems")
+  async connectAgendamentosItems(
+    @common.Param() params: ClientesWhereUniqueInput,
+    @common.Body() body: AgendamentosWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      agendamentosItems: {
+        connect: body,
+      },
+    };
+    await this.service.updateClientes({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/agendamentosItems")
+  async updateAgendamentosItems(
+    @common.Param() params: ClientesWhereUniqueInput,
+    @common.Body() body: AgendamentosWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      agendamentosItems: {
+        set: body,
+      },
+    };
+    await this.service.updateClientes({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/agendamentosItems")
+  async disconnectAgendamentosItems(
+    @common.Param() params: ClientesWhereUniqueInput,
+    @common.Body() body: AgendamentosWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      agendamentosItems: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateClientes({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Get("/:id/transacoesItems")
+  @ApiNestedQuery(TransacoesFindManyArgs)
+  async findTransacoesItems(
+    @common.Req() request: Request,
+    @common.Param() params: ClientesWhereUniqueInput
+  ): Promise<Transacoes[]> {
+    const query = plainToClass(TransacoesFindManyArgs, request.query);
+    const results = await this.service.findTransacoesItems(params.id, {
+      ...query,
+      select: {
+        cliente: {
+          select: {
+            id: true,
+          },
+        },
+
+        createdAt: true,
+        dataHora: true,
+        id: true,
+        itemVendido: true,
+        metodoPagamento: true,
+        updatedAt: true,
+        valor: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/transacoesItems")
+  async connectTransacoesItems(
+    @common.Param() params: ClientesWhereUniqueInput,
+    @common.Body() body: TransacoesWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      transacoesItems: {
+        connect: body,
+      },
+    };
+    await this.service.updateClientes({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/transacoesItems")
+  async updateTransacoesItems(
+    @common.Param() params: ClientesWhereUniqueInput,
+    @common.Body() body: TransacoesWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      transacoesItems: {
+        set: body,
+      },
+    };
+    await this.service.updateClientes({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/transacoesItems")
+  async disconnectTransacoesItems(
+    @common.Param() params: ClientesWhereUniqueInput,
+    @common.Body() body: TransacoesWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      transacoesItems: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateClientes({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

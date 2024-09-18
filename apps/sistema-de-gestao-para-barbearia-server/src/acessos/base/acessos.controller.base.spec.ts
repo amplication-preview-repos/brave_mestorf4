@@ -19,23 +19,27 @@ const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
   createdAt: new Date(),
+  dataHoraAcesso: new Date(),
   id: "exampleId",
   updatedAt: new Date(),
 };
 const CREATE_RESULT = {
   createdAt: new Date(),
+  dataHoraAcesso: new Date(),
   id: "exampleId",
   updatedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
     createdAt: new Date(),
+    dataHoraAcesso: new Date(),
     id: "exampleId",
     updatedAt: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
   createdAt: new Date(),
+  dataHoraAcesso: new Date(),
   id: "exampleId",
   updatedAt: new Date(),
 };
@@ -123,6 +127,7 @@ describe("Acessos", () => {
       .expect({
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
+        dataHoraAcesso: CREATE_RESULT.dataHoraAcesso.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       });
   });
@@ -135,6 +140,7 @@ describe("Acessos", () => {
         {
           ...FIND_MANY_RESULT[0],
           createdAt: FIND_MANY_RESULT[0].createdAt.toISOString(),
+          dataHoraAcesso: FIND_MANY_RESULT[0].dataHoraAcesso.toISOString(),
           updatedAt: FIND_MANY_RESULT[0].updatedAt.toISOString(),
         },
       ]);
@@ -158,6 +164,7 @@ describe("Acessos", () => {
       .expect({
         ...FIND_ONE_RESULT,
         createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
+        dataHoraAcesso: FIND_ONE_RESULT.dataHoraAcesso.toISOString(),
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
       });
   });
@@ -171,6 +178,7 @@ describe("Acessos", () => {
       .expect({
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
+        dataHoraAcesso: CREATE_RESULT.dataHoraAcesso.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       })
       .then(function () {

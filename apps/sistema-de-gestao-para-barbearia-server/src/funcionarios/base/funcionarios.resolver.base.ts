@@ -17,7 +17,11 @@ import { Funcionarios } from "./Funcionarios";
 import { FuncionariosCountArgs } from "./FuncionariosCountArgs";
 import { FuncionariosFindManyArgs } from "./FuncionariosFindManyArgs";
 import { FuncionariosFindUniqueArgs } from "./FuncionariosFindUniqueArgs";
+import { CreateFuncionariosArgs } from "./CreateFuncionariosArgs";
+import { UpdateFuncionariosArgs } from "./UpdateFuncionariosArgs";
 import { DeleteFuncionariosArgs } from "./DeleteFuncionariosArgs";
+import { AcessosFindManyArgs } from "../../acessos/base/AcessosFindManyArgs";
+import { Acessos } from "../../acessos/base/Acessos";
 import { FuncionariosService } from "../funcionarios.service";
 @graphql.Resolver(() => Funcionarios)
 export class FuncionariosResolverBase {
@@ -51,6 +55,35 @@ export class FuncionariosResolverBase {
   }
 
   @graphql.Mutation(() => Funcionarios)
+  async createFuncionarios(
+    @graphql.Args() args: CreateFuncionariosArgs
+  ): Promise<Funcionarios> {
+    return await this.service.createFuncionarios({
+      ...args,
+      data: args.data,
+    });
+  }
+
+  @graphql.Mutation(() => Funcionarios)
+  async updateFuncionarios(
+    @graphql.Args() args: UpdateFuncionariosArgs
+  ): Promise<Funcionarios | null> {
+    try {
+      return await this.service.updateFuncionarios({
+        ...args,
+        data: args.data,
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
+  @graphql.Mutation(() => Funcionarios)
   async deleteFuncionarios(
     @graphql.Args() args: DeleteFuncionariosArgs
   ): Promise<Funcionarios | null> {
@@ -64,5 +97,19 @@ export class FuncionariosResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [Acessos], { name: "acessosItems" })
+  async findAcessosItems(
+    @graphql.Parent() parent: Funcionarios,
+    @graphql.Args() args: AcessosFindManyArgs
+  ): Promise<Acessos[]> {
+    const results = await this.service.findAcessosItems(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }

@@ -13,22 +13,18 @@ import { ClientesList } from "./clientes/ClientesList";
 import { ClientesCreate } from "./clientes/ClientesCreate";
 import { ClientesEdit } from "./clientes/ClientesEdit";
 import { ClientesShow } from "./clientes/ClientesShow";
-import { AgendamentosList } from "./agendamentos/AgendamentosList";
-import { AgendamentosCreate } from "./agendamentos/AgendamentosCreate";
-import { AgendamentosEdit } from "./agendamentos/AgendamentosEdit";
-import { AgendamentosShow } from "./agendamentos/AgendamentosShow";
 import { MensagensList } from "./mensagens/MensagensList";
 import { MensagensCreate } from "./mensagens/MensagensCreate";
 import { MensagensEdit } from "./mensagens/MensagensEdit";
 import { MensagensShow } from "./mensagens/MensagensShow";
+import { AgendamentosList } from "./agendamentos/AgendamentosList";
+import { AgendamentosCreate } from "./agendamentos/AgendamentosCreate";
+import { AgendamentosEdit } from "./agendamentos/AgendamentosEdit";
+import { AgendamentosShow } from "./agendamentos/AgendamentosShow";
 import { DisponibilidadeProfissionaisList } from "./disponibilidadeProfissionais/DisponibilidadeProfissionaisList";
 import { DisponibilidadeProfissionaisCreate } from "./disponibilidadeProfissionais/DisponibilidadeProfissionaisCreate";
 import { DisponibilidadeProfissionaisEdit } from "./disponibilidadeProfissionais/DisponibilidadeProfissionaisEdit";
 import { DisponibilidadeProfissionaisShow } from "./disponibilidadeProfissionais/DisponibilidadeProfissionaisShow";
-import { AcessosList } from "./acessos/AcessosList";
-import { AcessosCreate } from "./acessos/AcessosCreate";
-import { AcessosEdit } from "./acessos/AcessosEdit";
-import { AcessosShow } from "./acessos/AcessosShow";
 import { FuncionariosList } from "./funcionarios/FuncionariosList";
 import { FuncionariosCreate } from "./funcionarios/FuncionariosCreate";
 import { FuncionariosEdit } from "./funcionarios/FuncionariosEdit";
@@ -37,14 +33,18 @@ import { ProdutosList } from "./produtos/ProdutosList";
 import { ProdutosCreate } from "./produtos/ProdutosCreate";
 import { ProdutosEdit } from "./produtos/ProdutosEdit";
 import { ProdutosShow } from "./produtos/ProdutosShow";
-import { TransacoesList } from "./transacoes/TransacoesList";
-import { TransacoesCreate } from "./transacoes/TransacoesCreate";
-import { TransacoesEdit } from "./transacoes/TransacoesEdit";
-import { TransacoesShow } from "./transacoes/TransacoesShow";
 import { ServicosList } from "./servicos/ServicosList";
 import { ServicosCreate } from "./servicos/ServicosCreate";
 import { ServicosEdit } from "./servicos/ServicosEdit";
 import { ServicosShow } from "./servicos/ServicosShow";
+import { TransacoesList } from "./transacoes/TransacoesList";
+import { TransacoesCreate } from "./transacoes/TransacoesCreate";
+import { TransacoesEdit } from "./transacoes/TransacoesEdit";
+import { TransacoesShow } from "./transacoes/TransacoesShow";
+import { AcessosList } from "./acessos/AcessosList";
+import { AcessosCreate } from "./acessos/AcessosCreate";
+import { AcessosEdit } from "./acessos/AcessosEdit";
+import { AcessosShow } from "./acessos/AcessosShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -73,13 +73,6 @@ const App = (): React.ReactElement => {
           show={ClientesShow}
         />
         <Resource
-          name="Agendamentos"
-          list={AgendamentosList}
-          edit={AgendamentosEdit}
-          create={AgendamentosCreate}
-          show={AgendamentosShow}
-        />
-        <Resource
           name="Mensagens"
           list={MensagensList}
           edit={MensagensEdit}
@@ -87,18 +80,18 @@ const App = (): React.ReactElement => {
           show={MensagensShow}
         />
         <Resource
+          name="Agendamentos"
+          list={AgendamentosList}
+          edit={AgendamentosEdit}
+          create={AgendamentosCreate}
+          show={AgendamentosShow}
+        />
+        <Resource
           name="DisponibilidadeProfissionais"
           list={DisponibilidadeProfissionaisList}
           edit={DisponibilidadeProfissionaisEdit}
           create={DisponibilidadeProfissionaisCreate}
           show={DisponibilidadeProfissionaisShow}
-        />
-        <Resource
-          name="Acessos"
-          list={AcessosList}
-          edit={AcessosEdit}
-          create={AcessosCreate}
-          show={AcessosShow}
         />
         <Resource
           name="Funcionarios"
@@ -115,6 +108,13 @@ const App = (): React.ReactElement => {
           show={ProdutosShow}
         />
         <Resource
+          name="Servicos"
+          list={ServicosList}
+          edit={ServicosEdit}
+          create={ServicosCreate}
+          show={ServicosShow}
+        />
+        <Resource
           name="Transacoes"
           list={TransacoesList}
           edit={TransacoesEdit}
@@ -122,11 +122,11 @@ const App = (): React.ReactElement => {
           show={TransacoesShow}
         />
         <Resource
-          name="Servicos"
-          list={ServicosList}
-          edit={ServicosEdit}
-          create={ServicosCreate}
-          show={ServicosShow}
+          name="Acessos"
+          list={AcessosList}
+          edit={AcessosEdit}
+          create={AcessosCreate}
+          show={AcessosShow}
         />
       </Admin>
     </div>

@@ -12,7 +12,11 @@ export const ProdutosShow = (props: ShowProps): React.ReactElement => {
     <Show {...props}>
       <SimpleShowLayout>
         <DateField source="createdAt" label="Created At" />
+        <TextField label="descricao" source="descricao" />
+        <TextField label="estoque" source="estoque" />
         <TextField label="ID" source="id" />
+        <TextField label="nome" source="nome" />
+        <TextField label="preco" source="preco" />
         <DateField source="updatedAt" label="Updated At" />
       </SimpleShowLayout>
     </Show>

@@ -11,11 +11,31 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsOptional, IsString, MaxLength } from "class-validator";
+import { AgendamentosCreateNestedManyWithoutClientesItemsInput } from "./AgendamentosCreateNestedManyWithoutClientesItemsInput";
+import {
+  ValidateNested,
+  IsOptional,
+  IsDate,
+  IsString,
+  MaxLength,
+} from "class-validator";
 import { Type } from "class-transformer";
+import { TransacoesCreateNestedManyWithoutClientesItemsInput } from "./TransacoesCreateNestedManyWithoutClientesItemsInput";
 
 @InputType()
 class ClientesCreateInput {
+  @ApiProperty({
+    required: false,
+    type: () => AgendamentosCreateNestedManyWithoutClientesItemsInput,
+  })
+  @ValidateNested()
+  @Type(() => AgendamentosCreateNestedManyWithoutClientesItemsInput)
+  @IsOptional()
+  @Field(() => AgendamentosCreateNestedManyWithoutClientesItemsInput, {
+    nullable: true,
+  })
+  agendamentosItems?: AgendamentosCreateNestedManyWithoutClientesItemsInput;
+
   @ApiProperty({
     required: false,
   })
@@ -61,6 +81,18 @@ class ClientesCreateInput {
     nullable: true,
   })
   telefone?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => TransacoesCreateNestedManyWithoutClientesItemsInput,
+  })
+  @ValidateNested()
+  @Type(() => TransacoesCreateNestedManyWithoutClientesItemsInput)
+  @IsOptional()
+  @Field(() => TransacoesCreateNestedManyWithoutClientesItemsInput, {
+    nullable: true,
+  })
+  transacoesItems?: TransacoesCreateNestedManyWithoutClientesItemsInput;
 }
 
 export { ClientesCreateInput as ClientesCreateInput };

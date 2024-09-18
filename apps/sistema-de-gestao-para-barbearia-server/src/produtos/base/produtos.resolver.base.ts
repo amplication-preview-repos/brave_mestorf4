@@ -17,6 +17,8 @@ import { Produtos } from "./Produtos";
 import { ProdutosCountArgs } from "./ProdutosCountArgs";
 import { ProdutosFindManyArgs } from "./ProdutosFindManyArgs";
 import { ProdutosFindUniqueArgs } from "./ProdutosFindUniqueArgs";
+import { CreateProdutosArgs } from "./CreateProdutosArgs";
+import { UpdateProdutosArgs } from "./UpdateProdutosArgs";
 import { DeleteProdutosArgs } from "./DeleteProdutosArgs";
 import { ProdutosService } from "../produtos.service";
 @graphql.Resolver(() => Produtos)
@@ -48,6 +50,35 @@ export class ProdutosResolverBase {
       return null;
     }
     return result;
+  }
+
+  @graphql.Mutation(() => Produtos)
+  async createProdutos(
+    @graphql.Args() args: CreateProdutosArgs
+  ): Promise<Produtos> {
+    return await this.service.createProdutos({
+      ...args,
+      data: args.data,
+    });
+  }
+
+  @graphql.Mutation(() => Produtos)
+  async updateProdutos(
+    @graphql.Args() args: UpdateProdutosArgs
+  ): Promise<Produtos | null> {
+    try {
+      return await this.service.updateProdutos({
+        ...args,
+        data: args.data,
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
   }
 
   @graphql.Mutation(() => Produtos)

@@ -9,5 +9,85 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-class TransacoesCreateInput {}
+import { InputType, Field } from "@nestjs/graphql";
+import { ApiProperty } from "@nestjs/swagger";
+import { ClientesWhereUniqueInput } from "../../clientes/base/ClientesWhereUniqueInput";
+
+import {
+  ValidateNested,
+  IsOptional,
+  IsDate,
+  IsString,
+  MaxLength,
+  IsEnum,
+  IsNumber,
+  Min,
+  Max,
+} from "class-validator";
+
+import { Type } from "class-transformer";
+import { EnumTransacoesMetodoPagamento } from "./EnumTransacoesMetodoPagamento";
+
+@InputType()
+class TransacoesCreateInput {
+  @ApiProperty({
+    required: false,
+    type: () => ClientesWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => ClientesWhereUniqueInput)
+  @IsOptional()
+  @Field(() => ClientesWhereUniqueInput, {
+    nullable: true,
+  })
+  cliente?: ClientesWhereUniqueInput | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  dataHora?: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  itemVendido?: string | null;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumTransacoesMetodoPagamento,
+  })
+  @IsEnum(EnumTransacoesMetodoPagamento)
+  @IsOptional()
+  @Field(() => EnumTransacoesMetodoPagamento, {
+    nullable: true,
+  })
+  metodoPagamento?: "Option1" | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsNumber()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  valor?: number | null;
+}
+
 export { TransacoesCreateInput as TransacoesCreateInput };

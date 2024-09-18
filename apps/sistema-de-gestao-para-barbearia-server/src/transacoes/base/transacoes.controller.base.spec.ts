@@ -19,25 +19,37 @@ const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
   createdAt: new Date(),
+  dataHora: new Date(),
   id: "exampleId",
+  itemVendido: "exampleItemVendido",
   updatedAt: new Date(),
+  valor: 42.42,
 };
 const CREATE_RESULT = {
   createdAt: new Date(),
+  dataHora: new Date(),
   id: "exampleId",
+  itemVendido: "exampleItemVendido",
   updatedAt: new Date(),
+  valor: 42.42,
 };
 const FIND_MANY_RESULT = [
   {
     createdAt: new Date(),
+    dataHora: new Date(),
     id: "exampleId",
+    itemVendido: "exampleItemVendido",
     updatedAt: new Date(),
+    valor: 42.42,
   },
 ];
 const FIND_ONE_RESULT = {
   createdAt: new Date(),
+  dataHora: new Date(),
   id: "exampleId",
+  itemVendido: "exampleItemVendido",
   updatedAt: new Date(),
+  valor: 42.42,
 };
 
 const service = {
@@ -123,6 +135,7 @@ describe("Transacoes", () => {
       .expect({
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
+        dataHora: CREATE_RESULT.dataHora.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       });
   });
@@ -135,6 +148,7 @@ describe("Transacoes", () => {
         {
           ...FIND_MANY_RESULT[0],
           createdAt: FIND_MANY_RESULT[0].createdAt.toISOString(),
+          dataHora: FIND_MANY_RESULT[0].dataHora.toISOString(),
           updatedAt: FIND_MANY_RESULT[0].updatedAt.toISOString(),
         },
       ]);
@@ -158,6 +172,7 @@ describe("Transacoes", () => {
       .expect({
         ...FIND_ONE_RESULT,
         createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
+        dataHora: FIND_ONE_RESULT.dataHora.toISOString(),
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
       });
   });
@@ -171,6 +186,7 @@ describe("Transacoes", () => {
       .expect({
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
+        dataHora: CREATE_RESULT.dataHora.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       })
       .then(function () {

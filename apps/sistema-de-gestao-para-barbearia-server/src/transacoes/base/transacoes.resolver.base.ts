@@ -17,7 +17,10 @@ import { Transacoes } from "./Transacoes";
 import { TransacoesCountArgs } from "./TransacoesCountArgs";
 import { TransacoesFindManyArgs } from "./TransacoesFindManyArgs";
 import { TransacoesFindUniqueArgs } from "./TransacoesFindUniqueArgs";
+import { CreateTransacoesArgs } from "./CreateTransacoesArgs";
+import { UpdateTransacoesArgs } from "./UpdateTransacoesArgs";
 import { DeleteTransacoesArgs } from "./DeleteTransacoesArgs";
+import { Clientes } from "../../clientes/base/Clientes";
 import { TransacoesService } from "../transacoes.service";
 @graphql.Resolver(() => Transacoes)
 export class TransacoesResolverBase {
@@ -51,6 +54,51 @@ export class TransacoesResolverBase {
   }
 
   @graphql.Mutation(() => Transacoes)
+  async createTransacoes(
+    @graphql.Args() args: CreateTransacoesArgs
+  ): Promise<Transacoes> {
+    return await this.service.createTransacoes({
+      ...args,
+      data: {
+        ...args.data,
+
+        cliente: args.data.cliente
+          ? {
+              connect: args.data.cliente,
+            }
+          : undefined,
+      },
+    });
+  }
+
+  @graphql.Mutation(() => Transacoes)
+  async updateTransacoes(
+    @graphql.Args() args: UpdateTransacoesArgs
+  ): Promise<Transacoes | null> {
+    try {
+      return await this.service.updateTransacoes({
+        ...args,
+        data: {
+          ...args.data,
+
+          cliente: args.data.cliente
+            ? {
+                connect: args.data.cliente,
+              }
+            : undefined,
+        },
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
+  @graphql.Mutation(() => Transacoes)
   async deleteTransacoes(
     @graphql.Args() args: DeleteTransacoesArgs
   ): Promise<Transacoes | null> {
@@ -64,5 +112,20 @@ export class TransacoesResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => Clientes, {
+    nullable: true,
+    name: "cliente",
+  })
+  async getCliente(
+    @graphql.Parent() parent: Transacoes
+  ): Promise<Clientes | null> {
+    const result = await this.service.getCliente(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

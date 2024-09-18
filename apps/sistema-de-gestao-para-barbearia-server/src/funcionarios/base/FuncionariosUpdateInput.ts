@@ -9,5 +9,93 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-class FuncionariosUpdateInput {}
+import { InputType, Field } from "@nestjs/graphql";
+import { ApiProperty } from "@nestjs/swagger";
+import { AcessosUpdateManyWithoutFuncionariosItemsInput } from "./AcessosUpdateManyWithoutFuncionariosItemsInput";
+import {
+  ValidateNested,
+  IsOptional,
+  IsString,
+  MaxLength,
+  IsNumber,
+  Min,
+  Max,
+} from "class-validator";
+import { Type } from "class-transformer";
+
+@InputType()
+class FuncionariosUpdateInput {
+  @ApiProperty({
+    required: false,
+    type: () => AcessosUpdateManyWithoutFuncionariosItemsInput,
+  })
+  @ValidateNested()
+  @Type(() => AcessosUpdateManyWithoutFuncionariosItemsInput)
+  @IsOptional()
+  @Field(() => AcessosUpdateManyWithoutFuncionariosItemsInput, {
+    nullable: true,
+  })
+  acessosItems?: AcessosUpdateManyWithoutFuncionariosItemsInput;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  cargo?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  email?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  nome?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsNumber()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  salario?: number | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  telefone?: string | null;
+}
+
 export { FuncionariosUpdateInput as FuncionariosUpdateInput };

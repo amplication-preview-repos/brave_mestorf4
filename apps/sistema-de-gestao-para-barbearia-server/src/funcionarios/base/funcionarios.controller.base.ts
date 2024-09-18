@@ -22,6 +22,9 @@ import { Funcionarios } from "./Funcionarios";
 import { FuncionariosFindManyArgs } from "./FuncionariosFindManyArgs";
 import { FuncionariosWhereUniqueInput } from "./FuncionariosWhereUniqueInput";
 import { FuncionariosUpdateInput } from "./FuncionariosUpdateInput";
+import { AcessosFindManyArgs } from "../../acessos/base/AcessosFindManyArgs";
+import { Acessos } from "../../acessos/base/Acessos";
+import { AcessosWhereUniqueInput } from "../../acessos/base/AcessosWhereUniqueInput";
 
 export class FuncionariosControllerBase {
   constructor(protected readonly service: FuncionariosService) {}
@@ -33,8 +36,13 @@ export class FuncionariosControllerBase {
     return await this.service.createFuncionarios({
       data: data,
       select: {
+        cargo: true,
         createdAt: true,
+        email: true,
         id: true,
+        nome: true,
+        salario: true,
+        telefone: true,
         updatedAt: true,
       },
     });
@@ -50,8 +58,13 @@ export class FuncionariosControllerBase {
     return this.service.funcionariosItems({
       ...args,
       select: {
+        cargo: true,
         createdAt: true,
+        email: true,
         id: true,
+        nome: true,
+        salario: true,
+        telefone: true,
         updatedAt: true,
       },
     });
@@ -66,8 +79,13 @@ export class FuncionariosControllerBase {
     const result = await this.service.funcionarios({
       where: params,
       select: {
+        cargo: true,
         createdAt: true,
+        email: true,
         id: true,
+        nome: true,
+        salario: true,
+        telefone: true,
         updatedAt: true,
       },
     });
@@ -91,8 +109,13 @@ export class FuncionariosControllerBase {
         where: params,
         data: data,
         select: {
+          cargo: true,
           createdAt: true,
+          email: true,
           id: true,
+          nome: true,
+          salario: true,
+          telefone: true,
           updatedAt: true,
         },
       });
@@ -116,8 +139,13 @@ export class FuncionariosControllerBase {
       return await this.service.deleteFuncionarios({
         where: params,
         select: {
+          cargo: true,
           createdAt: true,
+          email: true,
           id: true,
+          nome: true,
+          salario: true,
+          telefone: true,
           updatedAt: true,
         },
       });
@@ -129,5 +157,88 @@ export class FuncionariosControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.Get("/:id/acessosItems")
+  @ApiNestedQuery(AcessosFindManyArgs)
+  async findAcessosItems(
+    @common.Req() request: Request,
+    @common.Param() params: FuncionariosWhereUniqueInput
+  ): Promise<Acessos[]> {
+    const query = plainToClass(AcessosFindManyArgs, request.query);
+    const results = await this.service.findAcessosItems(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        dataHoraAcesso: true,
+
+        funcionario: {
+          select: {
+            id: true,
+          },
+        },
+
+        id: true,
+        tipoAcesso: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/acessosItems")
+  async connectAcessosItems(
+    @common.Param() params: FuncionariosWhereUniqueInput,
+    @common.Body() body: AcessosWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      acessosItems: {
+        connect: body,
+      },
+    };
+    await this.service.updateFuncionarios({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/acessosItems")
+  async updateAcessosItems(
+    @common.Param() params: FuncionariosWhereUniqueInput,
+    @common.Body() body: AcessosWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      acessosItems: {
+        set: body,
+      },
+    };
+    await this.service.updateFuncionarios({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/acessosItems")
+  async disconnectAcessosItems(
+    @common.Param() params: FuncionariosWhereUniqueInput,
+    @common.Body() body: AcessosWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      acessosItems: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateFuncionarios({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

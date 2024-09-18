@@ -12,7 +12,11 @@ export const ProdutosList = (props: ListProps): React.ReactElement => {
     >
       <Datagrid rowClick="show" bulkActionButtons={false}>
         <DateField source="createdAt" label="Created At" />
+        <TextField label="descricao" source="descricao" />
+        <TextField label="estoque" source="estoque" />
         <TextField label="ID" source="id" />
+        <TextField label="nome" source="nome" />
+        <TextField label="preco" source="preco" />
         <DateField source="updatedAt" label="Updated At" />{" "}
       </Datagrid>
     </List>

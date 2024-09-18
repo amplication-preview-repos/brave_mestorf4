@@ -11,12 +11,49 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringFilter } from "../../util/StringFilter";
+import { AcessosListRelationFilter } from "../../acessos/base/AcessosListRelationFilter";
+import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { StringFilter } from "../../util/StringFilter";
+import { FloatNullableFilter } from "../../util/FloatNullableFilter";
 
 @InputType()
 class FuncionariosWhereInput {
+  @ApiProperty({
+    required: false,
+    type: () => AcessosListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => AcessosListRelationFilter)
+  @IsOptional()
+  @Field(() => AcessosListRelationFilter, {
+    nullable: true,
+  })
+  acessosItems?: AcessosListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  cargo?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  email?: StringNullableFilter;
+
   @ApiProperty({
     required: false,
     type: StringFilter,
@@ -27,6 +64,39 @@ class FuncionariosWhereInput {
     nullable: true,
   })
   id?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  nome?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: FloatNullableFilter,
+  })
+  @Type(() => FloatNullableFilter)
+  @IsOptional()
+  @Field(() => FloatNullableFilter, {
+    nullable: true,
+  })
+  salario?: FloatNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  telefone?: StringNullableFilter;
 }
 
 export { FuncionariosWhereInput as FuncionariosWhereInput };

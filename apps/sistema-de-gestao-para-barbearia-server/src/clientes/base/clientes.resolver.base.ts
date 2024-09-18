@@ -20,6 +20,10 @@ import { ClientesFindUniqueArgs } from "./ClientesFindUniqueArgs";
 import { CreateClientesArgs } from "./CreateClientesArgs";
 import { UpdateClientesArgs } from "./UpdateClientesArgs";
 import { DeleteClientesArgs } from "./DeleteClientesArgs";
+import { AgendamentosFindManyArgs } from "../../agendamentos/base/AgendamentosFindManyArgs";
+import { Agendamentos } from "../../agendamentos/base/Agendamentos";
+import { TransacoesFindManyArgs } from "../../transacoes/base/TransacoesFindManyArgs";
+import { Transacoes } from "../../transacoes/base/Transacoes";
 import { ClientesService } from "../clientes.service";
 @graphql.Resolver(() => Clientes)
 export class ClientesResolverBase {
@@ -95,5 +99,33 @@ export class ClientesResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [Agendamentos], { name: "agendamentosItems" })
+  async findAgendamentosItems(
+    @graphql.Parent() parent: Clientes,
+    @graphql.Args() args: AgendamentosFindManyArgs
+  ): Promise<Agendamentos[]> {
+    const results = await this.service.findAgendamentosItems(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @graphql.ResolveField(() => [Transacoes], { name: "transacoesItems" })
+  async findTransacoesItems(
+    @graphql.Parent() parent: Clientes,
+    @graphql.Args() args: TransacoesFindManyArgs
+  ): Promise<Transacoes[]> {
+    const results = await this.service.findTransacoesItems(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }

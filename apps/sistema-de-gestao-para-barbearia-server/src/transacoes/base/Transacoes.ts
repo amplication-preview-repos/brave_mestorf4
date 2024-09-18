@@ -11,11 +11,34 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString } from "class-validator";
+import { Clientes } from "../../clientes/base/Clientes";
+
+import {
+  ValidateNested,
+  IsOptional,
+  IsDate,
+  IsString,
+  MaxLength,
+  IsEnum,
+  IsNumber,
+  Min,
+  Max,
+} from "class-validator";
+
 import { Type } from "class-transformer";
+import { EnumTransacoesMetodoPagamento } from "./EnumTransacoesMetodoPagamento";
 
 @ObjectType()
 class Transacoes {
+  @ApiProperty({
+    required: false,
+    type: () => Clientes,
+  })
+  @ValidateNested()
+  @Type(() => Clientes)
+  @IsOptional()
+  cliente?: Clientes | null;
+
   @ApiProperty({
     required: true,
   })
@@ -23,6 +46,17 @@ class Transacoes {
   @Type(() => Date)
   @Field(() => Date)
   createdAt!: Date;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  dataHora!: Date | null;
 
   @ApiProperty({
     required: true,
@@ -33,12 +67,48 @@ class Transacoes {
   id!: string;
 
   @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  itemVendido!: string | null;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumTransacoesMetodoPagamento,
+  })
+  @IsEnum(EnumTransacoesMetodoPagamento)
+  @IsOptional()
+  @Field(() => EnumTransacoesMetodoPagamento, {
+    nullable: true,
+  })
+  metodoPagamento?: "Option1" | null;
+
+  @ApiProperty({
     required: true,
   })
   @IsDate()
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsNumber()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  valor!: number | null;
 }
 
 export { Transacoes as Transacoes };

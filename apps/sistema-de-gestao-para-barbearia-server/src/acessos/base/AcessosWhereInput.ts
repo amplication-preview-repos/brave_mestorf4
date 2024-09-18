@@ -11,12 +11,38 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringFilter } from "../../util/StringFilter";
+import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { IsOptional, ValidateNested, IsEnum } from "class-validator";
+import { FuncionariosWhereUniqueInput } from "../../funcionarios/base/FuncionariosWhereUniqueInput";
+import { StringFilter } from "../../util/StringFilter";
+import { EnumAcessosTipoAcesso } from "./EnumAcessosTipoAcesso";
 
 @InputType()
 class AcessosWhereInput {
+  @ApiProperty({
+    required: false,
+    type: DateTimeNullableFilter,
+  })
+  @Type(() => DateTimeNullableFilter)
+  @IsOptional()
+  @Field(() => DateTimeNullableFilter, {
+    nullable: true,
+  })
+  dataHoraAcesso?: DateTimeNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => FuncionariosWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => FuncionariosWhereUniqueInput)
+  @IsOptional()
+  @Field(() => FuncionariosWhereUniqueInput, {
+    nullable: true,
+  })
+  funcionario?: FuncionariosWhereUniqueInput;
+
   @ApiProperty({
     required: false,
     type: StringFilter,
@@ -27,6 +53,17 @@ class AcessosWhereInput {
     nullable: true,
   })
   id?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumAcessosTipoAcesso,
+  })
+  @IsEnum(EnumAcessosTipoAcesso)
+  @IsOptional()
+  @Field(() => EnumAcessosTipoAcesso, {
+    nullable: true,
+  })
+  tipoAcesso?: "Option1";
 }
 
 export { AcessosWhereInput as AcessosWhereInput };

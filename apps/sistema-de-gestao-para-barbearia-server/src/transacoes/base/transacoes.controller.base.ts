@@ -31,11 +31,29 @@ export class TransacoesControllerBase {
     @common.Body() data: TransacoesCreateInput
   ): Promise<Transacoes> {
     return await this.service.createTransacoes({
-      data: data,
+      data: {
+        ...data,
+
+        cliente: data.cliente
+          ? {
+              connect: data.cliente,
+            }
+          : undefined,
+      },
       select: {
+        cliente: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
+        dataHora: true,
         id: true,
+        itemVendido: true,
+        metodoPagamento: true,
         updatedAt: true,
+        valor: true,
       },
     });
   }
@@ -48,9 +66,19 @@ export class TransacoesControllerBase {
     return this.service.transacoesItems({
       ...args,
       select: {
+        cliente: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
+        dataHora: true,
         id: true,
+        itemVendido: true,
+        metodoPagamento: true,
         updatedAt: true,
+        valor: true,
       },
     });
   }
@@ -64,9 +92,19 @@ export class TransacoesControllerBase {
     const result = await this.service.transacoes({
       where: params,
       select: {
+        cliente: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
+        dataHora: true,
         id: true,
+        itemVendido: true,
+        metodoPagamento: true,
         updatedAt: true,
+        valor: true,
       },
     });
     if (result === null) {
@@ -87,11 +125,29 @@ export class TransacoesControllerBase {
     try {
       return await this.service.updateTransacoes({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          cliente: data.cliente
+            ? {
+                connect: data.cliente,
+              }
+            : undefined,
+        },
         select: {
+          cliente: {
+            select: {
+              id: true,
+            },
+          },
+
           createdAt: true,
+          dataHora: true,
           id: true,
+          itemVendido: true,
+          metodoPagamento: true,
           updatedAt: true,
+          valor: true,
         },
       });
     } catch (error) {
@@ -114,9 +170,19 @@ export class TransacoesControllerBase {
       return await this.service.deleteTransacoes({
         where: params,
         select: {
+          cliente: {
+            select: {
+              id: true,
+            },
+          },
+
           createdAt: true,
+          dataHora: true,
           id: true,
+          itemVendido: true,
+          metodoPagamento: true,
           updatedAt: true,
+          valor: true,
         },
       });
     } catch (error) {

@@ -11,11 +11,28 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsOptional, IsString, MaxLength } from "class-validator";
+import { Agendamentos } from "../../agendamentos/base/Agendamentos";
+import {
+  ValidateNested,
+  IsOptional,
+  IsDate,
+  IsString,
+  MaxLength,
+} from "class-validator";
 import { Type } from "class-transformer";
+import { Transacoes } from "../../transacoes/base/Transacoes";
 
 @ObjectType()
 class Clientes {
+  @ApiProperty({
+    required: false,
+    type: () => [Agendamentos],
+  })
+  @ValidateNested()
+  @Type(() => Agendamentos)
+  @IsOptional()
+  agendamentosItems?: Array<Agendamentos>;
+
   @ApiProperty({
     required: true,
   })
@@ -77,6 +94,15 @@ class Clientes {
     nullable: true,
   })
   telefone!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Transacoes],
+  })
+  @ValidateNested()
+  @Type(() => Transacoes)
+  @IsOptional()
+  transacoesItems?: Array<Transacoes>;
 
   @ApiProperty({
     required: true,

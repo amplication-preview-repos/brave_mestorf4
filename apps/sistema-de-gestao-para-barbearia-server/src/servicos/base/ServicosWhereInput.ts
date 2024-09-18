@@ -11,12 +11,38 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringFilter } from "../../util/StringFilter";
+import { AgendamentosListRelationFilter } from "../../agendamentos/base/AgendamentosListRelationFilter";
+import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { StringFilter } from "../../util/StringFilter";
+import { FloatNullableFilter } from "../../util/FloatNullableFilter";
 
 @InputType()
 class ServicosWhereInput {
+  @ApiProperty({
+    required: false,
+    type: () => AgendamentosListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => AgendamentosListRelationFilter)
+  @IsOptional()
+  @Field(() => AgendamentosListRelationFilter, {
+    nullable: true,
+  })
+  agendamentosItems?: AgendamentosListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  descricao?: StringNullableFilter;
+
   @ApiProperty({
     required: false,
     type: StringFilter,
@@ -27,6 +53,28 @@ class ServicosWhereInput {
     nullable: true,
   })
   id?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  nome?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: FloatNullableFilter,
+  })
+  @Type(() => FloatNullableFilter)
+  @IsOptional()
+  @Field(() => FloatNullableFilter, {
+    nullable: true,
+  })
+  preco?: FloatNullableFilter;
 }
 
 export { ServicosWhereInput as ServicosWhereInput };

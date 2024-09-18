@@ -1,14 +1,14 @@
 import { Module } from "@nestjs/common";
 import { ProfissionaisModule } from "./profissionais/profissionais.module";
 import { ClientesModule } from "./clientes/clientes.module";
-import { AgendamentosModule } from "./agendamentos/agendamentos.module";
 import { MensagensModule } from "./mensagens/mensagens.module";
+import { AgendamentosModule } from "./agendamentos/agendamentos.module";
 import { DisponibilidadeProfissionaisModule } from "./disponibilidadeProfissionais/disponibilidadeProfissionais.module";
-import { AcessosModule } from "./acessos/acessos.module";
 import { FuncionariosModule } from "./funcionarios/funcionarios.module";
 import { ProdutosModule } from "./produtos/produtos.module";
-import { TransacoesModule } from "./transacoes/transacoes.module";
 import { ServicosModule } from "./servicos/servicos.module";
+import { TransacoesModule } from "./transacoes/transacoes.module";
+import { AcessosModule } from "./acessos/acessos.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -23,14 +23,14 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
   imports: [
     ProfissionaisModule,
     ClientesModule,
-    AgendamentosModule,
     MensagensModule,
+    AgendamentosModule,
     DisponibilidadeProfissionaisModule,
-    AcessosModule,
     FuncionariosModule,
     ProdutosModule,
-    TransacoesModule,
     ServicosModule,
+    TransacoesModule,
+    AcessosModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,

@@ -10,7 +10,11 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-import { Prisma, Funcionarios as PrismaFuncionarios } from "@prisma/client";
+import {
+  Prisma,
+  Funcionarios as PrismaFuncionarios,
+  Acessos as PrismaAcessos,
+} from "@prisma/client";
 
 export class FuncionariosServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -45,5 +49,16 @@ export class FuncionariosServiceBase {
     args: Prisma.FuncionariosDeleteArgs
   ): Promise<PrismaFuncionarios> {
     return this.prisma.funcionarios.delete(args);
+  }
+
+  async findAcessosItems(
+    parentId: string,
+    args: Prisma.AcessosFindManyArgs
+  ): Promise<PrismaAcessos[]> {
+    return this.prisma.funcionarios
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .acessosItems(args);
   }
 }

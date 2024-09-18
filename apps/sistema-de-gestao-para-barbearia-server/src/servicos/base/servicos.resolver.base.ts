@@ -17,7 +17,11 @@ import { Servicos } from "./Servicos";
 import { ServicosCountArgs } from "./ServicosCountArgs";
 import { ServicosFindManyArgs } from "./ServicosFindManyArgs";
 import { ServicosFindUniqueArgs } from "./ServicosFindUniqueArgs";
+import { CreateServicosArgs } from "./CreateServicosArgs";
+import { UpdateServicosArgs } from "./UpdateServicosArgs";
 import { DeleteServicosArgs } from "./DeleteServicosArgs";
+import { AgendamentosFindManyArgs } from "../../agendamentos/base/AgendamentosFindManyArgs";
+import { Agendamentos } from "../../agendamentos/base/Agendamentos";
 import { ServicosService } from "../servicos.service";
 @graphql.Resolver(() => Servicos)
 export class ServicosResolverBase {
@@ -51,6 +55,35 @@ export class ServicosResolverBase {
   }
 
   @graphql.Mutation(() => Servicos)
+  async createServicos(
+    @graphql.Args() args: CreateServicosArgs
+  ): Promise<Servicos> {
+    return await this.service.createServicos({
+      ...args,
+      data: args.data,
+    });
+  }
+
+  @graphql.Mutation(() => Servicos)
+  async updateServicos(
+    @graphql.Args() args: UpdateServicosArgs
+  ): Promise<Servicos | null> {
+    try {
+      return await this.service.updateServicos({
+        ...args,
+        data: args.data,
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
+  @graphql.Mutation(() => Servicos)
   async deleteServicos(
     @graphql.Args() args: DeleteServicosArgs
   ): Promise<Servicos | null> {
@@ -64,5 +97,19 @@ export class ServicosResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [Agendamentos], { name: "agendamentosItems" })
+  async findAgendamentosItems(
+    @graphql.Parent() parent: Servicos,
+    @graphql.Args() args: AgendamentosFindManyArgs
+  ): Promise<Agendamentos[]> {
+    const results = await this.service.findAgendamentosItems(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }

@@ -9,5 +9,70 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-class ServicosUpdateInput {}
+import { InputType, Field } from "@nestjs/graphql";
+import { ApiProperty } from "@nestjs/swagger";
+import { AgendamentosUpdateManyWithoutServicosItemsInput } from "./AgendamentosUpdateManyWithoutServicosItemsInput";
+import {
+  ValidateNested,
+  IsOptional,
+  IsString,
+  MaxLength,
+  IsNumber,
+  Min,
+  Max,
+} from "class-validator";
+import { Type } from "class-transformer";
+
+@InputType()
+class ServicosUpdateInput {
+  @ApiProperty({
+    required: false,
+    type: () => AgendamentosUpdateManyWithoutServicosItemsInput,
+  })
+  @ValidateNested()
+  @Type(() => AgendamentosUpdateManyWithoutServicosItemsInput)
+  @IsOptional()
+  @Field(() => AgendamentosUpdateManyWithoutServicosItemsInput, {
+    nullable: true,
+  })
+  agendamentosItems?: AgendamentosUpdateManyWithoutServicosItemsInput;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  descricao?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  nome?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsNumber()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  preco?: number | null;
+}
+
 export { ServicosUpdateInput as ServicosUpdateInput };

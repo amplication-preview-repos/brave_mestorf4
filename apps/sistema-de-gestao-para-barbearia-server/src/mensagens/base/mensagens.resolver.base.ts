@@ -17,6 +17,8 @@ import { Mensagens } from "./Mensagens";
 import { MensagensCountArgs } from "./MensagensCountArgs";
 import { MensagensFindManyArgs } from "./MensagensFindManyArgs";
 import { MensagensFindUniqueArgs } from "./MensagensFindUniqueArgs";
+import { CreateMensagensArgs } from "./CreateMensagensArgs";
+import { UpdateMensagensArgs } from "./UpdateMensagensArgs";
 import { DeleteMensagensArgs } from "./DeleteMensagensArgs";
 import { MensagensService } from "../mensagens.service";
 @graphql.Resolver(() => Mensagens)
@@ -48,6 +50,35 @@ export class MensagensResolverBase {
       return null;
     }
     return result;
+  }
+
+  @graphql.Mutation(() => Mensagens)
+  async createMensagens(
+    @graphql.Args() args: CreateMensagensArgs
+  ): Promise<Mensagens> {
+    return await this.service.createMensagens({
+      ...args,
+      data: args.data,
+    });
+  }
+
+  @graphql.Mutation(() => Mensagens)
+  async updateMensagens(
+    @graphql.Args() args: UpdateMensagensArgs
+  ): Promise<Mensagens | null> {
+    try {
+      return await this.service.updateMensagens({
+        ...args,
+        data: args.data,
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
   }
 
   @graphql.Mutation(() => Mensagens)
