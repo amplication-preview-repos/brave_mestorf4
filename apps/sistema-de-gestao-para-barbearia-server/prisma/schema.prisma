@@ -1,0 +1,133 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Profissionais {
+  createdAt     DateTime @default(now())
+  email         String?
+  especialidade String?
+  id            String   @id @default(cuid())
+  nome          String?
+  telefone      String?
+  updatedAt     DateTime @updatedAt
+}
+
+model Clientes {
+  agendamentosItems Agendamentos[]
+  createdAt         DateTime       @default(now())
+  dataNascimento    DateTime?
+  email             String?
+  id                String         @id @default(cuid())
+  nome              String?
+  telefone          String?
+  transacoesItems   Transacoes[]
+  updatedAt         DateTime       @updatedAt
+}
+
+model Mensagens {
+  createdAt    DateTime @default(now())
+  destinatario String?
+  id           String   @id @default(cuid())
+  lida         Boolean?
+  mensagem     String?
+  remetente    String?
+  updatedAt    DateTime @updatedAt
+}
+
+model Agendamentos {
+  cliente   Clientes?               @relation(fields: [clienteId], references: [id])
+  clienteId String?
+  createdAt DateTime                @default(now())
+  dataHora  DateTime?
+  duracao   Int?
+  id        String                  @id @default(cuid())
+  servico   Servicos?               @relation(fields: [servicoId], references: [id])
+  servicoId String?
+  status    EnumAgendamentosStatus?
+  updatedAt DateTime                @updatedAt
+}
+
+model DisponibilidadeProfissionais {
+  createdAt     DateTime                                @default(now())
+  horarioFim    DateTime?
+  horarioInicio DateTime?
+  id            String                                  @id @default(cuid())
+  profissional  String?
+  status        EnumDisponibilidadeProfissionaisStatus?
+  updatedAt     DateTime                                @updatedAt
+}
+
+model Funcionarios {
+  acessosItems Acessos[]
+  cargo        String?
+  createdAt    DateTime  @default(now())
+  email        String?
+  id           String    @id @default(cuid())
+  nome         String?
+  salario      Float?
+  telefone     String?
+  updatedAt    DateTime  @updatedAt
+}
+
+model Produtos {
+  createdAt DateTime @default(now())
+  descricao String?
+  estoque   Int?
+  id        String   @id @default(cuid())
+  nome      String?
+  preco     Float?
+  updatedAt DateTime @updatedAt
+}
+
+model Servicos {
+  agendamentosItems Agendamentos[]
+  createdAt         DateTime       @default(now())
+  descricao         String?
+  id                String         @id @default(cuid())
+  nome              String?
+  preco             Float?
+  updatedAt         DateTime       @updatedAt
+}
+
+model Transacoes {
+  cliente         Clientes?                      @relation(fields: [clienteId], references: [id])
+  clienteId       String?
+  createdAt       DateTime                       @default(now())
+  dataHora        DateTime?
+  id              String                         @id @default(cuid())
+  itemVendido     String?
+  metodoPagamento EnumTransacoesMetodoPagamento?
+  updatedAt       DateTime                       @updatedAt
+  valor           Float?
+}
+
+model Acessos {
+  createdAt      DateTime               @default(now())
+  dataHoraAcesso DateTime?
+  funcionario    Funcionarios?          @relation(fields: [funcionarioId], references: [id])
+  funcionarioId  String?
+  id             String                 @id @default(cuid())
+  tipoAcesso     EnumAcessosTipoAcesso?
+  updatedAt      DateTime               @updatedAt
+}
+
+enum EnumAgendamentosStatus {
+  Option1
+}
+
+enum EnumDisponibilidadeProfissionaisStatus {
+  Option1
+}
+
+enum EnumTransacoesMetodoPagamento {
+  Option1
+}
+
+enum EnumAcessosTipoAcesso {
+  Option1
+}
